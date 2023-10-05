@@ -1,4 +1,5 @@
 import pygame as pg
+from sprites import *
 import random
 pg.init() # starter pygame modul
 
@@ -13,6 +14,8 @@ YELLOW = (255,255,0)
 screen = pg.display.set_mode((800,600)) # lager spill vindu, 800x600
  
 clock = pg.time.Clock()
+
+player = Player()
  
 pos_x = 100
 pos_y = 100
@@ -62,6 +65,7 @@ while playing: # game loop
         pass
  
     screen.fill(YELLOW)
+    
  
     player_box = pg.Rect(pos_x, pos_y, size_x,size_y)  # to første er posisjon, to siste er size
     pg.draw.rect(screen, RED, player_box)
