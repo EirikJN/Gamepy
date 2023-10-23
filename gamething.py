@@ -14,13 +14,19 @@ clock = pg.time.Clock()
 
 player = Player()
 
+enemy = Enemy()
+
 all_sprites = pg.sprite.Group()
+enemies = pg.sprite.Group()
 all_sprites.add(player)
+all_sprites.add(enemy)
 pos_x = 100
 pos_y = 100
 
 size_x = 100
 sixe_y = 100
+
+
 
 i = 0
 playing = True
@@ -35,6 +41,7 @@ while playing:
 
 
     all_sprites.update()
+    enemies.update()
 
     screen.fill(BLACK)
     all_sprites.draw(screen)
