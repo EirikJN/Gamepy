@@ -1,7 +1,7 @@
 import pygame as pg
 import random
 
-player_image = pg.image.load("Duck_Sprite.png")
+player_image = pg.image.load("_Idle.png")
 enemy_image = pg.image.load("Duck_Sprite.png")
 
 class Player(pg.sprite.Sprite):
@@ -43,7 +43,7 @@ class Player(pg.sprite.Sprite):
 class Enemy(pg.sprite.Sprite):
     def __init__(self): # denne funksjonen kjører når vi lager player
         pg.sprite.Sprite.__init__(self)
-        self.image = player_image
+        self.image = enemy_image
         self.rect = self.image.get_rect()
         self.pos_x = 100
         self.pos_y = 100
