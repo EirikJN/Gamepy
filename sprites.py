@@ -2,7 +2,12 @@ import pygame as pg
 import random
 
 player_image = pg.image.load("_Idle.png")
+player_image = pg.transform.scale(player_image, (200,100))
 enemy_image = pg.image.load("Duck_Sprite.png")
+enemy_image = pg.transform.scale(enemy_image, (100,300))
+
+ranged_image = pg.image.load("1_5.png")
+ranged_imageimage = pg.transform.scale(ranged_image, (30,30))
 
 class Player(pg.sprite.Sprite):
     def __init__(self): # denne funksjonen kjører når vi lager player
@@ -12,6 +17,18 @@ class Player(pg.sprite.Sprite):
         self.pos_x = 50
         self.pos_y = 400
         self.speed = 3
+        self.hp = 100
+
+
+    def take_dmg(self, dmg):
+        self.hp -= dmg
+        if self.hp <= 0:
+            self.kill()
+ 
+    def attack(self):
+        projectile = Ranged_attack(self.pos_x, self.pos_y)
+        print("attacked")
+        projectile.add(self.all_sprites)
 
     def update(self):
         self.rect.centerx = self.pos_x
@@ -64,6 +81,20 @@ class Enemy(pg.sprite.Sprite):
 
         if self.pos_y > 800:
             self.pos_y = 800 
+
+class Ranged_attack(pg.sprite.Sprite):
+    def __init__(self, x, y): # denne funksjonen kjører når vi lager player
+        pg.sprite.Sprite.__init__(self)
+        self.image = ranged_image
+        self.rect = self.image.get_rect()
+        self.image.set_colorkey((255,255,255))
+ 
+        self.pos_x = x
+        self.pos_y = y
+        self.speed = 10
+ 
+        self.rect.x = self.pos_x
+        self.rect.y = self.pos_y
 
         # player input
         keys = pg.key.get_pressed()
