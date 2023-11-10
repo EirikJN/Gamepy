@@ -4,7 +4,7 @@ import random
 player_image = pg.image.load("_Idle.png")
 player_image = pg.transform.scale(player_image, (200,100))
 enemy_image = pg.image.load("Duck_Sprite.png")
-enemy_image = pg.transform.scale(enemy_image, (100,300))
+enemy_image = pg.transform.scale(enemy_image, (150,50))
 
 ranged_image = pg.image.load("1_5.png")
 ranged_imageimage = pg.transform.scale(ranged_image, (30,30))
@@ -18,6 +18,9 @@ class Player(pg.sprite.Sprite):
         self.pos_y = 400
         self.speed = 3
         self.hp = 100
+
+        self.rect.centerx = self.pos_x
+        self.rect.centery = self.pos_y
 
 
     def take_dmg(self, dmg):
@@ -65,6 +68,9 @@ class Enemy(pg.sprite.Sprite):
         self.pos_x = 100
         self.pos_y = 100
         self.speed = 2
+        
+        self.rect.centerx = self.pos_x
+        self.rect.centery = self.pos_y
 
     def update(self):
         self.rect.centerx = self.pos_x

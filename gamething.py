@@ -18,13 +18,15 @@ enemy = Enemy()
 
 all_sprites = pg.sprite.Group()
 enemies = pg.sprite.Group()
+
 all_sprites.add(player)
 all_sprites.add(enemy)
+enemies.add(enemy)
+
 pos_x = 100
 pos_y = 100
 
-size_x = 100
-sixe_y = 100
+
 
 
 
@@ -32,13 +34,17 @@ i = 0
 playing = True
 while playing:
     clock.tick(165)
-    print("FPS: ", i)
+    #print("FPS: ", i)
     i += 1
     for event in pg.event.get():
         if event.type == pg.QUIT:
             playing = False
             pg.quit()
 
+
+    hits = pg.sprite.spritecollide(player, enemies, False)
+    if hits:
+        print("collided with enemies")
 
     all_sprites.update()
     enemies.update()
