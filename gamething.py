@@ -12,12 +12,12 @@ screen = pg.display.set_mode((1200,800))
 
 clock = pg.time.Clock()
 
-player = Player()
-
-enemy = Enemy()
-
 all_sprites = pg.sprite.Group()
 enemies = pg.sprite.Group()
+
+player = Player(all_sprites, enemies)
+enemy = Enemy()
+
 
 all_sprites.add(player)
 all_sprites.add(enemy)
@@ -26,6 +26,11 @@ enemies.add(enemy)
 pos_x = 100
 pos_y = 100
 
+jumping = False
+
+Y_GRAVITY = 1
+JUMP_HEIGHT = 20
+Y_VELOCITY = JUMP_HEIGHT
 
 
 
@@ -41,6 +46,10 @@ while playing:
             playing = False
             pg.quit()
 
+    keys_pressed = pg.key.get_pressed()
+
+    if keys_pressed[pg.K_SPACE]:
+        jumping = True
 
     hits = pg.sprite.spritecollide(player, enemies, False)
     if hits:
@@ -51,6 +60,13 @@ while playing:
 
     screen.fill(BLACK)
     all_sprites.draw(screen)
+
+    if jumping:
+        pos_y -= Y_VELOCITY
+        Y_VELOCITY -= Y_GRAVITY
+        if Y_VELOCITY < JUMP_HEIGHT:
+            jumping = False
+            Y_VELOCITY = JUMP_HEIGHT
 
 
 

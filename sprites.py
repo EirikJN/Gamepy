@@ -1,3 +1,4 @@
+from typing import Any
 import pygame as pg
 import random
 
@@ -10,7 +11,7 @@ ranged_image = pg.image.load("1_5.png")
 ranged_imageimage = pg.transform.scale(ranged_image, (30,30))
 
 class Player(pg.sprite.Sprite):
-    def __init__(self): # denne funksjonen kjører når vi lager player
+    def __init__(self, all_sprites, enemies): # denne funksjonen kjører når vi lager player
         pg.sprite.Sprite.__init__(self)
         self.image = player_image
         self.rect = self.image.get_rect()
@@ -18,6 +19,8 @@ class Player(pg.sprite.Sprite):
         self.pos_y = 400
         self.speed = 3
         self.hp = 100
+        self.all_sprites = all_sprites
+        self.enemies = enemies
 
         self.rect.centerx = self.pos_x
         self.rect.centery = self.pos_y
@@ -28,10 +31,15 @@ class Player(pg.sprite.Sprite):
         if self.hp <= 0:
             self.kill()
  
-    def attack(self):
-        projectile = Ranged_attack(self.pos_x, self.pos_y)
-        print("attacked")
-        projectile.add(self.all_sprites)
+    #def attack(self):
+        #projectile = Ranged_attack(self.pos_x, self.pos_y)
+        #print("attacked")
+        #projectile.add(self.all_sprites)
+
+    def melee(self):
+        meleeatt = MeleeAttack((100,100), enemies)
+        self.all_sprites.add(meleeatt)
+
 
     def update(self):
         self.rect.centerx = self.pos_x
@@ -51,14 +59,26 @@ class Player(pg.sprite.Sprite):
 
         # player input
         keys = pg.key.get_pressed()
-        if keys[pg.K_w]: # oppover
-            self.pos_y -= self.speed
-        if keys[pg.K_s]: # nedover
-            self.pos_y += self.speed
+        
         if keys[pg.K_a]: # venstre
             self.pos_x -= self.speed
         if keys[pg.K_d]: # høyre
             self.pos_x += self.speed 
+
+class MeleeAttack(pg.sprite.Sprite):
+    def __init__(self, position, enemies):
+        super().__init__()
+        self.image = pg.surface((20,20))
+        self.image.fill((255,0,0))
+        self.rect = self.image.get_rect(center=position)
+        self.lifetime = 10
+
+    def update(self):
+        self.lifetime -= 1
+        if self.lifetime <= 0: 
+            self.kill()
+
+        pg.sprite.spritecollide(self, self.enemies, True)
 
 class Enemy(pg.sprite.Sprite):
     def __init__(self): # denne funksjonen kjører når vi lager player
@@ -68,7 +88,7 @@ class Enemy(pg.sprite.Sprite):
         self.pos_x = 100
         self.pos_y = 100
         self.speed = 2
-        
+
         self.rect.centerx = self.pos_x
         self.rect.centery = self.pos_y
 
