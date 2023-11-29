@@ -15,8 +15,13 @@ clock = pg.time.Clock()
 all_sprites = pg.sprite.Group()
 enemies = pg.sprite.Group()
 
-player = Player(all_sprites, enemies)
+player = Player(all_sprites, enemies) # LAGER 1 KOPI AV PLAYER
 enemy = Enemy()
+
+image = pg.image.load('mbg.png')
+def Background_sky(image):
+    size = pg.transform.scale(image, (1200,800))
+    screen.blit(size, (0, 0))
 
 
 all_sprites.add(player)
@@ -26,11 +31,9 @@ enemies.add(enemy)
 pos_x = 100
 pos_y = 100
 
-jumping = False
 
-Y_GRAVITY = 1
-JUMP_HEIGHT = 20
-Y_VELOCITY = JUMP_HEIGHT
+
+
 
 
 
@@ -38,7 +41,7 @@ Y_VELOCITY = JUMP_HEIGHT
 i = 0
 playing = True
 while playing:
-    clock.tick(165)
+    clock.tick(60)
     #print("FPS: ", i)
     i += 1
     for event in pg.event.get():
@@ -46,10 +49,10 @@ while playing:
             playing = False
             pg.quit()
 
-    keys_pressed = pg.key.get_pressed()
 
-    if keys_pressed[pg.K_SPACE]:
-        jumping = True
+
+    
+   
 
     hits = pg.sprite.spritecollide(player, enemies, False)
     if hits:
@@ -58,16 +61,14 @@ while playing:
     all_sprites.update()
     enemies.update()
 
-    screen.fill(BLACK)
+    
+
+    Background_sky(image)
+
     all_sprites.draw(screen)
 
-    if jumping:
-        pos_y -= Y_VELOCITY
-        Y_VELOCITY -= Y_GRAVITY
-        if Y_VELOCITY < JUMP_HEIGHT:
-            jumping = False
-            Y_VELOCITY = JUMP_HEIGHT
 
+    
 
 
     pg.display.update()

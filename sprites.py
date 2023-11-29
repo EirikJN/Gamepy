@@ -10,21 +10,32 @@ enemy_image = pg.transform.scale(enemy_image, (150,50))
 ranged_image = pg.image.load("1_5.png")
 ranged_imageimage = pg.transform.scale(ranged_image, (30,30))
 
+
+
 class Player(pg.sprite.Sprite):
     def __init__(self, all_sprites, enemies): # denne funksjonen kjører når vi lager player
         pg.sprite.Sprite.__init__(self)
         self.image = player_image
         self.rect = self.image.get_rect()
         self.pos_x = 50
-        self.pos_y = 400
-        self.speed = 3
+        self.pos_y = 650
+        self.speed = 10
         self.hp = 100
         self.all_sprites = all_sprites
         self.enemies = enemies
 
         self.rect.centerx = self.pos_x
         self.rect.centery = self.pos_y
+        
+        self.jumping = False
+       
+        self.left_image = pg.transform.flip(self.image,True,False)
+        self.right_image = self.image
 
+        self.Y_GRAVITY = 1
+        self.JUMP_HEIGHT = 20
+        self.Y_VELOCITY = self.JUMP_HEIGHT
+        
 
     def take_dmg(self, dmg):
         self.hp -= dmg
@@ -37,11 +48,12 @@ class Player(pg.sprite.Sprite):
         #projectile.add(self.all_sprites)
 
     def melee(self):
-        meleeatt = MeleeAttack((100,100), enemies)
+        meleeatt = MeleeAttack((100,100), self.enemies)
         self.all_sprites.add(meleeatt)
 
 
     def update(self):
+
         self.rect.centerx = self.pos_x
         self.rect.centery = self.pos_y
 
@@ -62,8 +74,26 @@ class Player(pg.sprite.Sprite):
         
         if keys[pg.K_a]: # venstre
             self.pos_x -= self.speed
+            
+            self.image = self.left_image
+            
+
         if keys[pg.K_d]: # høyre
             self.pos_x += self.speed 
+
+            self.image = self.right_image
+            
+        
+        if keys[pg.K_SPACE]:
+            self.jumping = True
+            
+        if self.jumping:
+            self.pos_y -= self.Y_VELOCITY
+            self.Y_VELOCITY -= self.Y_GRAVITY
+            if self.Y_VELOCITY < -self.JUMP_HEIGHT:
+                self.jumping = False
+                self.Y_VELOCITY = self.JUMP_HEIGHT
+
 
 class MeleeAttack(pg.sprite.Sprite):
     def __init__(self, position, enemies):
